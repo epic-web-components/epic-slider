@@ -16,16 +16,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-      }
-      epic-slider {
-        display: block;
         width: 100%;
         max-width: 1000px;
         margin: 0 auto;
+        background: white;
+        display: flex;
+        flex-flow: row nowrap;
+      }
+
+      .slide {
+        display: block;
+        width: 100%;
       }
     </style>
 
-    <h1>Testing</h1>
+    <div class="slide">
+      <div class="controls">
+        <a href="#" class="left-arrow">L</a>
+        <a href="#" class="right-arrow">L</a>
+
+        <h2>Event Title</h2>
+        <h3 class="date">Jun 30 8PM</h3>
+
+        <a href="#" class="learnMore">Learn More</a>
+      </div>
+    </div>
 
     <div class="slide">
       <div class="controls">
