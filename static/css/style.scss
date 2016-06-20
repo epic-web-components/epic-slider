@@ -1,17 +1,15 @@
 $red: #c30;
-
 $slideHeight: 600px;
 @import 'reset.css';
 * {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
-body{
+body {
     width: 100%;
     font-family: "Interstate", helvetica, arial, sans-serif;
     box-sizing: border-box;
     .epic-slider {
         width: 100%;
-        max-width: 1200px;
         margin: 0 auto;
         overflow-x: hidden;
         white-space: nowrap;
@@ -25,7 +23,6 @@ body{
             background-position: center center;
             background-size: cover;
             min-height: $slideHeight;
-
             .controls {
                 position: absolute;
                 bottom: 0;
@@ -50,7 +47,7 @@ body{
                         background-image: url('../img/leftArrow.svg');
                         background-repeat: no-repeat;
                         background-position: center center;
-                        margin-bottom: 50px;
+                        margin-bottom: 70px;
                         flex: 1;
                     }
                     &.leftArrow {
@@ -69,9 +66,11 @@ body{
                         font-size: 3em;
                         text-transform: uppercase;
                         line-height: 1.5;
+                        white-space: normal;
                     }
                     h3 {
                         font-size: 2em;
+                        white-space: normal;
                     }
                     a {
                         &.learnMore {

@@ -58,6 +58,7 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
     <script>
+        // arrow navigation
         $('.epic-slider .slide a.leftArrow, .epic-slider .slide a.rightArrow').each(function() {
             $(this).click(function(e) {
                 e.preventDefault();
@@ -87,14 +88,21 @@
             }, 400);
         }
 
-        /*
-          Automatically scrolls to next slide. Set with interval within $(window).load()
-        */
         function scrollNext() {
+            /*
+              Automatically scrolls to next slide. Set with interval within $(window).load()
+            */
+            scrollTo(currentSlide() + 1);
+        }
+
+        function currentSlide() {
             var slideWidth = $('.epic-slider .slide').width(),
                 currentSlide = parseInt($('.epic-slider').scrollLeft() / slideWidth);
+            return (currentSlide);
+        }
 
-            scrollTo(currentSlide + 1);
+        function numberOfSlides() {
+          return numOfSlides = $('.epic-slider .slide').length - 1;
         }
 
         $(window).on('load', function() {
@@ -105,10 +113,24 @@
               TODO: mobile support?
             */
             $('.epic-slider').on('mouseover', function(e) {
-              clearInterval(bannerTimer);
+                clearInterval(bannerTimer);
             }).on('mouseout', function(e) {
-              bannerTimer = window.setInterval(scrollNext, 3000);
+                bannerTimer = window.setInterval(scrollNext, 3000);
             });
+
+            /*
+              hide nav arrows if there's only 1 slide
+            */
+            if(numberOfSlides() < 2) {
+              $('.epic-slider .leftArrow, .epic-slider .rightArrow').css({
+                opacity: '0'
+              });
+            }
+        });
+
+        // lock to current slide when resizing window
+        $(window).resize(function() {
+            scrollTo(currentSlide());
         });
     </script>
 
