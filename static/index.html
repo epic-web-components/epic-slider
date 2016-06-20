@@ -4,135 +4,59 @@
 <head>
     <title>Epic-Slider Demo</title>
 
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/epic-slider.css" />
 </head>
 
 <body>
-    <div class="epic-slider">
-        <div class="slide" style="background-image: url(img/photo-1.jpg);">
-            <div class="controls">
-                <div class="content">
-                    <h2>Event 1</h2>
-                    <h3>Jul 30 8pm</h3>
-                    <a href="#" class="learnMore">Learn More</a>
-                </div>
-                <a href="#" class="leftArrow">Left</a>
-                <a href="#" class="rightArrow">Right</a>
-            </div>
-        </div>
-        <div class="slide" style="background-image: url(img/photo-2.jpg);">
-            <div class="controls">
-                <div class="content">
-                    <h2>Event 2</h2>
-                    <h3>Jul 30 8pm</h3>
-                    <a href="#" class="learnMore">Learn More</a>
-                </div>
-                <a href="#" class="leftArrow">Left</a>
-                <a href="#" class="rightArrow">Right</a>
-            </div>
-        </div>
-        <div class="slide" style="background-image: url(img/photo-3.jpg);">
-            <div class="controls">
-                <div class="content">
-                    <h2>Event 3</h2>
-                    <h3>Jul 30 8pm</h3>
-                    <a href="#" class="learnMore">Learn More</a>
-                </div>
-                <a href="#" class="leftArrow">Left</a>
-                <a href="#" class="rightArrow">Right</a>
-            </div>
-        </div>
-        <div class="slide" style="background-image: url(img/photo-4.jpg);">
-            <div class="controls">
-                <div class="content">
-                    <h2>Event 4</h2>
-                    <h3>Jul 30 8pm</h3>
-                    <a href="#" class="learnMore">Learn More</a>
-                </div>
-                <a href="#" class="leftArrow">Left</a>
-                <a href="#" class="rightArrow">Right</a>
-            </div>
-        </div>
-    </div>
+  <div class="epic-slider">
+      <div class="slide" style="background-image: url(img/photo-1.jpg);">
+          <div class="controls">
+              <div class="content">
+                  <h2>Event 1</h2>
+                  <h3>Jul 30 8pm</h3>
+                  <a href="#" class="learnMore">Learn More</a>
+              </div>
+              <a href="#" class="leftArrow">Left</a>
+              <a href="#" class="rightArrow">Right</a>
+          </div>
+      </div>
+      <div class="slide" style="background-image: url(img/photo-2.jpg);">
+          <div class="controls">
+              <div class="content">
+                  <h2>Event 2</h2>
+                  <h3>Jul 30 8pm</h3>
+                  <a href="#" class="learnMore">Learn More</a>
+              </div>
+              <a href="#" class="leftArrow">Left</a>
+              <a href="#" class="rightArrow">Right</a>
+          </div>
+      </div>
+      <div class="slide" style="background-image: url(img/photo-3.jpg);">
+          <div class="controls">
+              <div class="content">
+                  <h2>Event 3</h2>
+                  <h3>Jul 30 8pm</h3>
+                  <a href="#" class="learnMore">Learn More</a>
+              </div>
+              <a href="#" class="leftArrow">Left</a>
+              <a href="#" class="rightArrow">Right</a>
+          </div>
+      </div>
+      <div class="slide" style="background-image: url(img/photo-4.jpg);">
+          <div class="controls">
+              <div class="content">
+                  <h2>Event 4</h2>
+                  <h3>Jul 30 8pm</h3>
+                  <a href="#" class="learnMore">Learn More</a>
+              </div>
+              <a href="#" class="leftArrow">Left</a>
+              <a href="#" class="rightArrow">Right</a>
+          </div>
+      </div>
+  </div>
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-
-    <script>
-        // arrow navigation
-        $('.epic-slider .slide a.leftArrow, .epic-slider .slide a.rightArrow').each(function() {
-            $(this).click(function(e) {
-                e.preventDefault();
-
-                var num = $(this).parent().parent().index();
-
-                if ($(this).hasClass('leftArrow')) {
-                    scrollTo(num - 1);
-                } else {
-                    scrollTo(num + 1);
-                }
-            });
-        });
-
-        function scrollTo(num) {
-            var slideWidth = $('.epic-slider .slide').width(),
-                numOfSlides = $('.epic-slider .slide').length - 1;
-
-            /* edge case logic */
-            if (num < 0) {
-                num = numOfSlides;
-            } else if (num > numOfSlides) {
-                num = 0;
-            }
-            $('.epic-slider').animate({
-                scrollLeft: num * slideWidth
-            }, 400);
-        }
-
-        function scrollNext() {
-            /*
-              Automatically scrolls to next slide. Set with interval within $(window).load()
-            */
-            scrollTo(currentSlide() + 1);
-        }
-
-        function currentSlide() {
-            var slideWidth = $('.epic-slider .slide').width(),
-                currentSlide = parseInt($('.epic-slider').scrollLeft() / slideWidth);
-            return (currentSlide);
-        }
-
-        function numberOfSlides() {
-          return numOfSlides = $('.epic-slider .slide').length - 1;
-        }
-
-        $(window).on('load', function() {
-            var bannerTimer = window.setInterval(scrollNext, 3000);
-
-            /*
-              pause timer when mouse-overed
-              TODO: mobile support?
-            */
-            $('.epic-slider').on('mouseover', function(e) {
-                clearInterval(bannerTimer);
-            }).on('mouseout', function(e) {
-                bannerTimer = window.setInterval(scrollNext, 3000);
-            });
-
-            /*
-              hide nav arrows if there's only 1 slide
-            */
-            if(numberOfSlides() < 2) {
-              $('.epic-slider .leftArrow, .epic-slider .rightArrow').css({
-                opacity: '0'
-              });
-            }
-        });
-
-        // lock to current slide when resizing window
-        $(window).resize(function() {
-            scrollTo(currentSlide());
-        });
-    </script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="js/epic-slider.js"></script>
 
 </body>
 
