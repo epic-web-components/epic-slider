@@ -1,36 +1,38 @@
-# Your first Polymer element
+# \<epic-slider\>
 
-This repo goes with the [Build your first Polymer element codelab](http://www.code-labs.io/codelabs/polymer-first-elements/).
+a basic responsive banner/slider polymer element
 
-The codelab is designed to be used with [Chrome Dev Editor](https://chrome.google.com/webstore/detail/chrome-dev-editor-develop/pnoffddplpippgcfjdhbmhkofpnaalpg?hl=en).
-See the next section if you'd like to use another editor for the codelab.
+## Install the Polymer-CLI
 
-## Running the codelab without Chrome Dev Editor
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
-If you're not using CDE, you'll need to install some command-line tools to manage
-dependencies and to run the demo.
+## Viewing Your Application
 
-1.  Download and install Node from [https://nodejs.org/](https://nodejs.org/). Node includes the node package manager command, `npm`.
+```
+$ polymer serve
+```
 
-2.  Install `bower` and `polyserve`:
+## Building Your Application
 
-        npm install -g bower polyserve
+```
+$ polymer build
+```
 
-3.  Clone this repo:
+This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
+containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
+CSS, and JS optimizers.
 
-        https://github.com/googlecodelabs/polymer-first-elements.git
-        
-4.  Change directory to your local repo and install dependencies with `bower`:
+You can serve the built versions by giving `polymer serve` a folder to serve
+from:
 
-        cd polymer-first-elements
-        bower install
-        
-5.  To preview your element, run `polyserve` from the repo directory:
+```
+$ polymer serve build/bundled
+```
 
-        polyserve
-        
-    Open `localhost:8080/components/icon-toggle/demo/` in your browser. (Note that the path uses `icon-toggle`—the 
-    component name listed in this element's `bower.json` file—rather than the actual directory name.) 
-    
-If you're wondering what `polyserve` does, see [Testing elements with local bower dependencies](https://www.polymer-project.org/1.0/docs/start/reusableelements.html#local-dependencies) 
-in the Polymer docs. 
+## Running Tests
+
+```
+$ polymer test
+```
+
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
