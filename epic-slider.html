@@ -140,23 +140,24 @@
                     value: [],
                     notify: true
                 },
+                /** Whether to automatically scroll between slides */
                 autoSlide: {
                     type: Boolean,
                     value: true
                 },
+                /** time in ms for slide to automatically change */
                 slideTime: {
                     type: Number,
-                    // time in ms for slide to automatically change
                     value: 3000
                 },
+                /** time in ms for slide transition */
                 slideTransitionTime: {
                     type: Number,
-                    // time in ms for slide transition
                     value: 500
                 },
+                /** sets the tick value in ms for slide transitions. Lower is smoother, higher is more performant */
                 transitionSmoothness: {
                     type: Number,
-                    // sets the tick value in ms for slide transitions
                     value: 8
                 }
             },
@@ -178,22 +179,22 @@
             },
 
             listeners: {
-                'tap': 'handleTap',
-                'mouseover': 'handleMouseover',
-                'mouseout': 'handleMouseout'
+                // 'tap': 'handleTap',
+                // 'mouseover': 'handleMouseover',
+                // 'mouseout': 'handleMouseout'
             },
 
-            handleTap: function(e) {
-                console.log(e.target);
-            },
-
-            handleMouseover: function() {
-                console.log('mouse-overed');
-            },
-
-            handleMouseout: function() {
-                console.log('mouse-out');
-            },
+            // handleTap: function(e) {
+            //     console.log(e.target);
+            // },
+            //
+            // handleMouseover: function() {
+            //     console.log('mouse-overed');
+            // },
+            //
+            // handleMouseout: function() {
+            //     console.log('mouse-out');
+            // },
 
             /*
               Assigns navigation binding to right and left arrows
@@ -203,17 +204,8 @@
                     leftArrows = Polymer.dom(this.root).querySelectorAll('a.leftArrow'),
                     me = this;
 
-                for (var i = 0; i < rightArrows.length; i += 1) {
-                    rightArrows[i].onclick = function(e) {
-                        e.preventDefault();
-                        var index = 0,
-                            e = this.parentElement.parentElement;
-                        while (e = e.previousElementSibling) {
-                            ++index;
-                        }
-                        me.scrollToSlide(index + 1);
-                    };
-                }
+                // assumes there are an equal number of right and left arrows
+                //    (move to seperate for loops if not)
                 for (i = 0; i < leftArrows.length; i += 1) {
                     leftArrows[i].onclick = function(e) {
                         e.preventDefault();
@@ -223,6 +215,16 @@
                             ++index;
                         }
                         me.scrollToSlide(index - 1);
+                    };
+
+                    rightArrows[i].onclick = function(e) {
+                        e.preventDefault();
+                        var index = 0,
+                            e = this.parentElement.parentElement;
+                        while (e = e.previousElementSibling) {
+                            ++index;
+                        }
+                        me.scrollToSlide(index + 1);
                     };
                 }
             },
@@ -247,9 +249,9 @@
                 return changeInterval;
             },
 
-            pauseAutoRotate(interval) {
-                clearInterval(interval);
-            },
+            // pauseAutoRotate(interval) {
+            //     clearInterval(interval);
+            // },
 
             /*
               Returns the number of slides in the component
@@ -261,7 +263,7 @@
             /*
               Scrolls to a specific slide number
 
-              @num: number of slide to transition to. Starts at 0
+              @param {num} Number of slide to transition to. Starts at 0
             */
             scrollToSlide: function(num) {
                 var slideWidth = Polymer.dom(this).node.offsetWidth,
@@ -282,9 +284,9 @@
             /*
               Recursive scrolling animation (to left)
 
-              @element: element to apply the scroll to
-              @to: pixel value to scroll to
-              @duration: time (in ms) for animation to take
+              @param {element} Element to scroll
+              @param {to} Pixel value to scroll to
+              @param {duration} Time (in ms) for animation to take
              */
             scrollToLeft: function(element, to, duration) {
                 if (duration <= 0) return;
@@ -304,7 +306,7 @@
             /*
               Adds an additional slide to the component.
 
-              @slideData: JSON object containing the following properties:
+              @param {slideData} JSON object containing the following properties:
                 'name', 'teaser', 'slug', 'startAndEnd', 'image'
             */
             addSlide: function(slideData) {
