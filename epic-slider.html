@@ -130,6 +130,9 @@
 
     <script>
         Polymer({
+            /*
+              TODO: implement quadratic scrolling (currently linear)
+            */
 
             is: 'epic-slider',
 
@@ -153,48 +156,37 @@
                 /** time in ms for slide transition */
                 slideTransitionTime: {
                     type: Number,
-                    value: 500
+                    value: 400
                 },
                 /** sets the tick value in ms for slide transitions. Lower is smoother, higher is more performant */
                 transitionSmoothness: {
                     type: Number,
-                    value: 8
+                    value: 10
+                },
+                slideInterval: {
+                  // computed: 'computeSetSlideInterval(propertyToWatch, uyr)',
+                  //
+                  // // calls callbackForWhenThisValueChanges(newValue, oldvalue)
+                  // observer: 'callbackForWhenThisValueChanges'
                 }
             },
 
             ready: function() {},
 
             attached: function() {
-                // start transition
-                if (this.autoSlide) {
-                    var slideInterval = this.startAutoRotate(this.slideTime);
-
-                    Polymer.dom(this.root).onmouseout = function() {
-                        console.log('mouse-overed');
-                        this.startAutoRotate(this.slideTime);
-                    };
+                // start auto-slide
+                if(this.autoSlide){
+                    this.startInterval()
                 }
 
                 this.assignArrowClickBinding();
             },
 
             listeners: {
-                // 'tap': 'handleTap',
-                // 'mouseover': 'handleMouseover',
-                // 'mouseout': 'handleMouseout'
+              /* stop auto-slide when mouse hovers over slider */
+              'mouseenter': 'stopInterval',
+              'mouseleave': 'startInterval'
             },
-
-            // handleTap: function(e) {
-            //     console.log(e.target);
-            // },
-            //
-            // handleMouseover: function() {
-            //     console.log('mouse-overed');
-            // },
-            //
-            // handleMouseout: function() {
-            //     console.log('mouse-out');
-            // },
 
             /*
               Assigns navigation binding to right and left arrows
@@ -230,28 +222,32 @@
             },
 
             /*
-              Starts auto-rotate
-
-              @param {time} The amount of time in ms for a slide to stay before transitioning
+              Starts auto-slide interval
             */
-            startAutoRotate: function(time) {
-                var me = this,
-                    // first transition to slide 1 because element initializes to 0
-                    slide = 1,
-                    changeInterval = setInterval(function() {
-                        me.scrollToSlide(slide);
-                        if (slide >= me.numOfSlides()) {
-                            slide = 1;
-                        } else {
-                            slide += 1;
-                        }
-                    }, this.slideTime);
-                return changeInterval;
+            startInterval: function() {
+                this.slideInterval = setInterval(function() {
+                    var currentSlide = this.currentSlide();
+                    this.scrollToSlide(currentSlide + 1);
+                }.bind(this), this.slideTime);
             },
 
-            // pauseAutoRotate(interval) {
-            //     clearInterval(interval);
-            // },
+            /*
+              Stops auto-slide
+            */
+            stopInterval: function() {
+                clearInterval(this.slideInterval);
+            },
+
+            /*
+              Gets current slide number (0 is first slide)
+            */
+            currentSlide: function() {
+                var scrollLeft = Polymer.dom(this).node.scrollLeft,
+                    slideWidth = Polymer.dom(this).node.offsetWidth,
+                    slideNum = Math.round(scrollLeft / slideWidth);
+
+                return slideNum;
+            },
 
             /*
               Returns the number of slides in the component
@@ -266,7 +262,8 @@
               @param {num} Number of slide to transition to. Starts at 0
             */
             scrollToSlide: function(num) {
-                var slideWidth = Polymer.dom(this).node.offsetWidth,
+                var slideSize = Polymer.dom(this).node.getBoundingClientRect(),
+                    slideWidth = slideSize.right - slideSize.left,
                     numOfSlides = this.numOfSlides() - 1;
 
                 /* edge cases */
@@ -278,7 +275,6 @@
 
                 /* scroll to position (animated) */
                 this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
-                // Polymer.dom(this).node.scrollLeft = num * slideWidth;
             },
 
             /*
@@ -293,14 +289,13 @@
 
                 var tick = this.transitionSmoothness,
                     difference = to - element.scrollLeft,
-                    perTick = difference / duration * tick,
-                    me = this;
+                    perTick = difference / duration * tick;
 
                 setTimeout(function() {
-                    element.scrollLeft = element.scrollLeft + perTick;
+                    element.scrollLeft = Math.floor(element.scrollLeft + perTick);
                     if (element.scrollLeft == to) return;
-                    me.scrollToLeft(element, to, duration - tick);
-                }, tick);
+                    this.scrollToLeft(element, to, duration - tick);
+                }.bind(this), tick);
             },
 
             /*
