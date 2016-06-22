@@ -96,14 +96,14 @@
                 white-space: normal;
                 text-align: left;
                 margin: 0;
-                text-shadow: 0 0 5px rgba(0,0,0,.5);
+                text-shadow: 0 0 5px rgba(0, 0, 0, .5);
             }
 
             :host .event .controls .content h3 {
                 font-size: 2em;
                 white-space: normal;
                 margin: 0;
-                text-shadow: 0 0 5px rgba(0,0,0,.5);
+                text-shadow: 0 0 5px rgba(0, 0, 0, .5);
             }
 
             :host .event .controls .content a.learnMore {
@@ -145,22 +145,15 @@
                 When mousing over this element, auto-sliding is disabled until a mouseleave event is detected.
 
               Slides JSON should be in the following format:
-              [
-                 {
-                    "name":"Event 1 Title",
-                    "teaser":"Event Subheading",
-                    "slug":"example-event-slug-1",
-                    "startAndEnd":"Jun 30 2015",
-                    "image":"https://images.contentful.com/1kzutnf7jc3r/6CDf5pkmCkygA6o086w6oE/a677c05dd7885ac9eae599a4ca664d14/hiking.jpg"
-                 },
-                 {
-                    "name":"Event 2 Title",
-                    "teaser":"Event 2 Subheading",
-                    "slug":"example-event-slug-2",
-                    "startAndEnd":"Jul 3 2015",
-                    "image":"https://images.contentful.com/1kzutnf7jc3r/5bpHVev0pOka4o2MEiMSWw/185ada80eb8228e016cd62fae7f1e695/cycle.jpg"
-                 }
-              ]
+              [{
+                  "name":"",
+                  "teaser":"",
+                  "slug":"",
+                  "startAndEnd":"",
+                  "image":""
+               }. {
+                  ...
+               }]
             */
 
             is: 'epic-slider',
@@ -208,8 +201,8 @@
             },
 
             ready: function() {
-              // initialize custom height
-              this.customStyle['--min-height'] = this.minHeight;
+                // initialize custom height
+                this.customStyle['--min-height'] = this.minHeight;
             },
 
             attached: function() {
@@ -221,14 +214,21 @@
                 this.assignArrowClickBinding();
 
                 // Add event handler for window resize
-                window.addEventListener("resize", function() {
-                  var currentSlide = this.currentSlide();
-                  this.scrollToSlide(currentSlide);
+                window.addEventListener('resize', function() {
+                  this.debounce('resize', this.alignSelf, 100);
                 }.bind(this));
             },
 
             detached: function() {
                 this.stopInterval();
+            },
+
+            /*
+              Make sure we don't get caught halfway through a slide on window.resize
+            */
+            alignSelf: function() {
+                var currentSlide = this.currentSlide();
+                this.scrollToSlide(currentSlide, false);
             },
 
             /*
@@ -305,8 +305,9 @@
               Scrolls to a specific slide number
 
               @param {num} Number of slide to transition to. Starts at 0
+              @param {animate} Bool whether to animate the transition
             */
-            scrollToSlide: function(num) {
+            scrollToSlide: function(num, animate = true) {
                 var slideSize = Polymer.dom(this).node.getBoundingClientRect(),
                     slideWidth = slideSize.right - slideSize.left,
                     numOfSlides = this.numOfSlides() - 1;
@@ -318,8 +319,12 @@
                     num = 0;
                 }
 
-                /* scroll to position (animated) */
-                this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
+                /* scroll to position */
+                if(animate) {
+                    this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
+                } else {
+                  Polymer.dom(this).node.scrollLeft = num * slideWidth;
+                }
             },
 
             /*
