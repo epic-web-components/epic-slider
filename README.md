@@ -4,7 +4,7 @@ A basic responsive banner/slider polymer component. Data is pushed as JSON to th
 
 ## Example
 
-```
+```javascript
 <epic-slider slides='[
 {
   "name":"Event 1 Title",
@@ -32,8 +32,8 @@ A basic responsive banner/slider polymer component. Data is pushed as JSON to th
 ## Properties
 
 | Property   	  | Type  	| Default  	 | Description  	 |
-|---	          |---	    |---	       |---	             |
-| slides   	    | JSON  	| []  	| [
+| :---	          | :---	    | :---	       | :---	             |
+| slides   	    | JSON  	| []  	| `[
 {
   "name":"Event 1 Title",
   "teaser":"Event Subheading",
@@ -54,7 +54,7 @@ A basic responsive banner/slider polymer component. Data is pushed as JSON to th
   "startAndEnd":"Dec 31 2016",
   "image":"https://images.contentful.com/1kzutnf7jc3r/5bpHVev0pOka4o2MEiMSWw/185ada80eb8228e016cd62fae7f1e695/cycle.jpg"
 }
-]  	|
+]`  	|
 | min-height  	| String  	| '400px'  	| Minimum height for slides  	|
 | autoSlide  	  |   	|   	|   	|
 | slideTime  	  |   	|   	|   	|
