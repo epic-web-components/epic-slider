@@ -239,10 +239,12 @@
                     leftArrows = Polymer.dom(this.root).querySelectorAll('a.leftArrow'),
                     me = this;
 
-                // assumes there are an equal number of right and left arrows
-                //    (move to seperate for loops if not)
+                /*
+                  assumes there are an equal number of right and left arrows
+                  (move to seperate for loops if not)
+                */
                 for (i = 0; i < leftArrows.length; i += 1) {
-                    leftArrows[i].onclick = function(e) {
+                    leftArrows[i].addEventListener('click', function(e) {
                         e.preventDefault();
                         var index = 0,
                             e = this.parentElement.parentElement;
@@ -250,9 +252,9 @@
                             ++index;
                         }
                         me.scrollToSlide(index - 1);
-                    };
+                    });
 
-                    rightArrows[i].onclick = function(e) {
+                    rightArrows[i].addEventListener('click', function(e) {
                         e.preventDefault();
                         var index = 0,
                             e = this.parentElement.parentElement;
@@ -260,7 +262,7 @@
                             ++index;
                         }
                         me.scrollToSlide(index + 1);
-                    };
+                    });
                 }
             },
 
