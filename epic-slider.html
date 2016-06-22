@@ -256,6 +256,7 @@
 
                     rightArrows[i].addEventListener('click', function(e) {
                         e.preventDefault();
+                        console.log('right arrow click detected');
                         var index = 0,
                             e = this.parentElement.parentElement;
                         while (e = e.previousElementSibling) {
