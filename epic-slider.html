@@ -120,19 +120,21 @@
                 background: #a52900;
             }
         </style>
-        <template is="dom-repeat" items="{{slides}}">
-            <div class="event" id="{{item.slug}}" style="background-image: url({{item.image}});">
-                <div class="controls">
-                    <div class="content">
-                        <h2>{{item.name}}</h2>
-                        <h3>{{item.startAndEnd}}</h3>
-                        <a href="{{item.slug}}" class="learnMore">Learn More</a>
+        <div id="container">
+            <template is="dom-repeat" items="{{slides}}">
+                <div class="event" id="{{item.slug}}" style="background-image: url({{item.image}});">
+                    <div class="controls">
+                        <div class="content">
+                            <h2>{{item.name}}</h2>
+                            <h3>{{item.startAndEnd}}</h3>
+                            <a href="{{item.slug}}" class="learnMore">Learn More</a>
+                        </div>
+                        <a href="#" class="leftArrow">Left</a>
+                        <a href="#" class="rightArrow">Right</a>
                     </div>
-                    <a href="#" class="leftArrow">Left</a>
-                    <a href="#" class="rightArrow">Right</a>
                 </div>
-            </div>
-        </template>
+            </template>
+        </div>
     </template>
 
     <script>
@@ -194,6 +196,9 @@
                 }
             },
 
+            observers: [
+            ],
+
             listeners: {
                 /* stop auto-slide when mouse hovers over slider */
                 'mouseenter': 'stopInterval',
@@ -203,6 +208,11 @@
             ready: function() {
                 // initialize custom height
                 this.customStyle['--min-height'] = this.minHeight;
+
+                // attach click observers whenever new slides are added
+                this._observer = Polymer.dom(this.$.container).observeNodes((function() {
+                    this.assignArrowClickBinding();
+                }).bind(this));
             },
 
             attached: function() {
@@ -240,30 +250,20 @@
                     me = this;
 
                 /*
-                  assumes there are an equal number of right and left arrows
-                  (move to seperate for loops if not)
+                    Assumes there are an equal number of right and left arrows
                 */
                 for (i = 0; i < leftArrows.length; i += 1) {
-                    leftArrows[i].addEventListener('click', function(e) {
+                    leftArrows[i].addEventListener('click', (function(e) {
                         e.preventDefault();
-                        var index = 0,
-                            e = this.parentElement.parentElement;
-                        while (e = e.previousElementSibling) {
-                            ++index;
-                        }
+                        var index = this.currentSlide();
                         me.scrollToSlide(index - 1);
-                    });
+                    }).bind(this));
 
-                    rightArrows[i].addEventListener('click', function(e) {
+                    rightArrows[i].addEventListener('click', (function(e) {
                         e.preventDefault();
-                        console.log('right arrow click detected');
-                        var index = 0,
-                            e = this.parentElement.parentElement;
-                        while (e = e.previousElementSibling) {
-                            ++index;
-                        }
+                        var index = this.currentSlide();
                         me.scrollToSlide(index + 1);
-                    });
+                    }).bind(this));
                 }
             },
 
