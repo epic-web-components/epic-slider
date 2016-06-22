@@ -35,6 +35,6 @@ A basic responsive banner/slider polymer component. Data is pushed as JSON to th
 | :---	          | :---	    | :---	       | :---	             |
 | slides   	    | JSON  	| []  	| `[{  "name":"Event 1 Title",  "teaser":"Event Subheading",  "slug":"example-event-slug-1",  "startAndEnd":"Jun 30 2015",  "image":"https://images.contentful.com/1kzutnf7jc3r/6CDf5pkmCkygA6o086w6oE/a677c05dd7885ac9eae599a4ca664d14/hiking.jpg"}]`  	|
 | min-height  	| String  	| `'400px'`  	| Minimum height for slides  	|
-| auto-slide  	  | Boolean  	| `True`  	| Whether or not to automatically slide between slides  	|
-| slide-time  	  | Number  	| `3000`  	| Time (in ms) to pause between changing slides  	|
-| slide-transition-time  	| Number  	| `400`  	| Time (in ms) for each transition to take  	|
+| autoSlide  	  | Boolean  	| `True`  	| Whether or not to automatically slide between slides  	|
+| slideTime  	  | Number  	| `3000`  	| Time (in ms) to pause between changing slides  	|
+| slideTransitionTime  	| Number  	| `400`  	| Time (in ms) for each transition to take  	|
