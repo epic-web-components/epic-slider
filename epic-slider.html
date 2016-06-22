@@ -96,12 +96,14 @@
                 white-space: normal;
                 text-align: left;
                 margin: 0;
+                text-shadow: 0 0 5px rgba(0,0,0,.5);
             }
 
             :host .event .controls .content h3 {
                 font-size: 2em;
                 white-space: normal;
                 margin: 0;
+                text-shadow: 0 0 5px rgba(0,0,0,.5);
             }
 
             :host .event .controls .content a.learnMore {
@@ -112,6 +114,10 @@
                 color: white;
                 text-decoration: none;
                 margin: 1em auto;
+            }
+
+            :host .event .controls .content a.learnMore:hover {
+                background: #a52900;
             }
         </style>
         <template is="dom-repeat" items="{{slides}}">
@@ -213,6 +219,12 @@
                 }
 
                 this.assignArrowClickBinding();
+
+                // Add event handler for window resize
+                window.addEventListener("resize", function() {
+                  var currentSlide = this.currentSlide();
+                  this.scrollToSlide(currentSlide);
+                }.bind(this));
             },
 
             detached: function() {
