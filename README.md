@@ -1,38 +1,38 @@
 # \<epic-slider\>
 
-a basic responsive banner/slider polymer element
+A basic responsive banner/slider polymer component. Data is pushed as JSON to the 'slides' attribute.
 
-## Install the Polymer-CLI
-
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
-
-## Viewing Your Application
+## Example
 
 ```
-$ polymer serve
+<epic-slider slides='[
+{
+  "name":"Event 1 Title",
+  "teaser":"Event Subheading",
+  "slug":"example-event-slug-1",
+  "startAndEnd":"Jun 30 2015",
+  "image":"https://images.contentful.com/1kzutnf7jc3r/6CDf5pkmCkygA6o086w6oE/a677c05dd7885ac9eae599a4ca664d14/hiking.jpg"
+},
+{
+  "name":"Event 2 Title",
+  "teaser":"Event 2 Subheading",
+  "slug":"example-event-slug-2",
+  "startAndEnd":"Jul 3 2015",
+  "image":"https://images.contentful.com/1kzutnf7jc3r/5bpHVev0pOka4o2MEiMSWw/185ada80eb8228e016cd62fae7f1e695/cycle.jpg"
+},   {
+  "name":"Event 3 Title",
+  "teaser":"Event 3 Subheading",
+  "slug":"example-event-slug-3",
+  "startAndEnd":"Dec 31 2016",
+  "image":"https://images.contentful.com/1kzutnf7jc3r/5bpHVev0pOka4o2MEiMSWw/185ada80eb8228e016cd62fae7f1e695/cycle.jpg"
+}
+]' min-height="400px"></epic-slider>
 ```
 
-## Building Your Application
+## Properties
 
-```
-$ polymer build
-```
-
-This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
-containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
-CSS, and JS optimizers.
-
-You can serve the built versions by giving `polymer serve` a folder to serve
-from:
-
-```
-$ polymer serve build/bundled
-```
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+slides (default empty)
+min-height (default '400px')
+autoSlide (default true)
+slideTime (default 3000)
+slideTransitionTime (default 400)
