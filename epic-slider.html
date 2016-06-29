@@ -196,8 +196,7 @@
                 }
             },
 
-            observers: [
-            ],
+            observers: [],
 
             listeners: {
                 /* stop auto-slide when mouse hovers over slider */
@@ -225,7 +224,7 @@
 
                 // Add event handler for window resize
                 window.addEventListener('resize', function() {
-                  this.debounce('resize', this.alignSelf, 100);
+                    this.debounce('resize', this.alignSelf, 100);
                 }.bind(this));
             },
 
@@ -323,10 +322,10 @@
                 }
 
                 /* scroll to position */
-                if(animate) {
+                if (animate) {
                     this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
                 } else {
-                  Polymer.dom(this).node.scrollLeft = num * slideWidth;
+                    Polymer.dom(this).node.scrollLeft = num * slideWidth;
                 }
             },
 
