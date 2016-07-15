@@ -122,7 +122,7 @@
         </style>
         <div id="container">
             <template is="dom-repeat" items="{{slides}}">
-                <div class="event" id="{{item.slug}}" style="background-image: url({{item.image}});">
+                <div class="event" id="{{item.slug}}" style="background-image: url({{item.featuredImage}});">
                     <div class="controls">
                         <div class="content">
                             <h2>{{item.name}}</h2>
@@ -196,7 +196,8 @@
                 }
             },
 
-            observers: [],
+            observers: [
+            ],
 
             listeners: {
                 /* stop auto-slide when mouse hovers over slider */
@@ -224,7 +225,7 @@
 
                 // Add event handler for window resize
                 window.addEventListener('resize', function() {
-                    this.debounce('resize', this.alignSelf, 100);
+                  this.debounce('resize', this.alignSelf, 100);
                 }.bind(this));
             },
 
@@ -322,10 +323,10 @@
                 }
 
                 /* scroll to position */
-                if (animate) {
+                if(animate) {
                     this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
                 } else {
-                    Polymer.dom(this).node.scrollLeft = num * slideWidth;
+                  Polymer.dom(this).node.scrollLeft = num * slideWidth;
                 }
             },
 
