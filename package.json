@@ -1,0 +1,27 @@
+{
+  "name": "epic-slider",
+  "version": "1.0.0",
+  "description": "A basic carousel slider, fed with an object of fields",
+  "main": "demo/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epic-web-components/epic-slider.git"
+  },
+  "author": "Alex Goodwin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/epic-web-components/epic-slider/issues"
+  },
+  "homepage": "https://github.com/epic-web-components/epic-slider#readme",
+  "devDependencies": {
+    "fs": "0.0.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-html-extract": "^0.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4"
+  }
+}

@@ -1,0 +1,254 @@
+
+            .test {
+              display: -webkit-flex;
+              display: -ms-flexbox;
+              display: flex;
+            }
+            :host {
+                width: 100%;
+                margin: 0 auto;
+                overflow-x: hidden;
+                white-space: nowrap;
+                font-size: 0;
+                display: block;
+                font-family: "Interstate", helvetica, arial, sans-serif;
+                --min-height: 400px
+            }
+
+            .event {
+                width: 100%;
+                display: inline-block;
+                position: relative;
+                font-size: 1rem;
+                background-color: black;
+                background-position: center center;
+                background-size: cover;
+                min-height: var(--min-height);
+            }
+
+            .controls {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 50%, transparent 100%);
+                height: 100%;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-flex-flow: row nowrap;
+                    -ms-flex-flow: row nowrap;
+                        flex-flow: row nowrap;
+                -webkit-justify-content: space-between;
+                    -ms-flex-pack: justify;
+                        justify-content: space-between;
+                -webkit-align-items: flex-end;
+                    -ms-flex-align: end;
+                        align-items: flex-end;
+            }
+
+            .controls.Bottom {
+              /* default */
+              -webkit-align-items: flex-end;
+                  -ms-flex-align: end;
+                          -ms-grid-row-align: flex-end;
+                      align-items: flex-end;
+            }
+
+            .controls:not(.Top):not(.Center) .content {
+              padding-bottom: 50px;
+            }
+
+            .controls.Top {
+              -webkit-align-items: flex-start;
+                  -ms-flex-align: start;
+                          -ms-grid-row-align: flex-start;
+                      align-items: flex-start;
+              box-sizing: border-box;
+            }
+
+            .controls.Top .content {
+              padding-top: 50px;
+            }
+
+            .controls.Center {
+              -webkit-align-items: center;
+                  -ms-flex-align: center;
+                          -ms-grid-row-align: center;
+                      align-items: center;
+            }
+
+            a.leftArrow,
+            a.rightArrow {
+                background-size: contain;
+                width: 25px;
+                height: 50px;
+                text-indent: -9999px;
+                color: white;
+                display: inline-block;
+                background-image: url("img/leftArrow.svg");
+                background-repeat: no-repeat;
+                background-position: center center;
+                margin-bottom: 70px;
+                -webkit-flex: 1;
+                    -ms-flex: 1;
+                        flex: 1;
+                -ms-flex-item-align: center;
+                        -webkit-align-self: center;
+                        align-self: center;
+            }
+
+            a.leftArrow {
+                -webkit-order: 0;
+                    -ms-flex-order: 0;
+                        order: 0;
+            }
+
+            a.rightArrow {
+                -webkit-transform: rotate(180deg);
+                    -ms-transform: rotate(180deg);
+                        transform: rotate(180deg);
+                -webkit-order: 2;
+                    -ms-flex-order: 2;
+                        order: 2;
+            }
+
+            .content {
+                -webkit-order: 1;
+                    -ms-flex-order: 1;
+                        order: 1;
+                color: white;
+                -webkit-flex: 7;
+                    -ms-flex: 7;
+                        flex: 7;
+            }
+
+            .content.Left {
+                text-align: left;
+            }
+
+            .content.Center {
+                text-align: center;
+            }
+
+            .content.Right {
+                text-align: right;
+            }
+
+            h2 {
+                font-size: 4em;
+                text-transform: uppercase;
+                line-height: 1.2;
+                white-space: normal;
+                margin: 0;
+                text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+            }
+
+            h3 {
+                font-size: 2.5em;
+                white-space: normal;
+                margin: .25em auto;
+                text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+            }
+
+            a.learnMore {
+                background: #c30;
+                display: inline-block;
+                padding: 1em 2em;
+                text-transform: uppercase;
+                color: white;
+                text-decoration: none;
+                margin: 1em auto;
+            }
+
+            a.learnMore:hover {
+                background: #a52900;
+            }
+
+            a.learnMore.White {
+                background: white;
+                color: #333;
+            }
+
+            a.learnMore.White:hover {
+                background: #eee;
+            }
+
+            a.learnMore.Red {
+                background: #c30;
+                color: #fff;
+            }
+
+            a.learnMore.Red:hover {
+                background: #a52900;
+            }
+
+            a.learnMore.Navy {
+                background: #036;
+                color: #fff;
+            }
+
+            a.learnMore.Navy:hover {
+                background: #001933;
+            }
+
+            a.learnMore.Black {
+                background: #333;
+                color: #fff;
+            }
+
+            a.learnMore.Black:hover {
+                background: #fff;
+                color: #333;
+            }
+
+            @media screen and (min-width: 1680px) {
+                h2 {
+                  font-size: 4.5em;
+                }
+                h3 {
+                  font-size: 3em;
+                }
+            }
+
+            @media screen and (max-width: 991px) {
+                h2 {
+                  font-size: 3em;
+                }
+                h3 {
+                  font-size: 2em;
+                }
+            }
+
+            @media screen and (max-width: 768px) {
+                .event {
+                    min-height: 300px;
+                }
+                .controls {
+                    -webkit-align-items: center;
+                        -ms-flex-align: center;
+                                -ms-grid-row-align: center;
+                            align-items: center;
+                    padding-bottom: 0;
+                }
+                .content.Left,
+                .content.Right {
+                    text-align: center;
+                }
+                a.leftArrow,
+                a.rightArrow {
+                    margin-bottom: 0;
+                }
+                a.learnMore {
+                    margin: 0 auto;
+                }
+                h2 {
+                    font-size: 2em;
+                    margin: .5em 0;
+                }
+                h3 {
+                    font-size: 1.5em;
+                    line-height: 1.2;
+                    margin: .5em 0;
+                }
+            }

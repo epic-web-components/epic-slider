@@ -1,10 +1,11 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../marked-element/marked-element.html">
 
 <dom-module id="epic-slider">
     <template>
         <style>
             :host {
-                width: 90%;
+                width: 100%;
                 margin: 0 auto;
                 overflow-x: hidden;
                 white-space: nowrap;
@@ -14,7 +15,7 @@
                 --min-height: 400px
             }
 
-            :host .event {
+            .event {
                 width: 100%;
                 display: inline-block;
                 position: relative;
@@ -25,7 +26,7 @@
                 min-height: var(--min-height);
             }
 
-            :host .event .controls {
+            .controls {
                 position: absolute;
                 bottom: 0;
                 left: 0;
@@ -44,33 +45,70 @@
                 -webkit-align-items: flex-end;
                 -ms-flex-align: end;
                 align-items: flex-end;
+            }
+
+            .controls.Bottom {
+                /* default */
+                -webkit-align-items: flex-end;
+                -ms-flex-align: end;
+                -ms-grid-row-align: flex-end;
+                align-items: flex-end;
+            }
+
+            .controls:not(.Top):not(.Center) .content {
                 padding-bottom: 50px;
             }
 
-            :host .event .controls a.leftArrow,
-            :host .event .controls a.rightArrow {
+            .controls.Top {
+                -webkit-align-items: flex-start;
+                -ms-flex-align: start;
+                -ms-grid-row-align: flex-start;
+                align-items: flex-start;
+                box-sizing: border-box;
+            }
+
+            .controls.Top .content {
+                padding-top: 50px;
+            }
+
+            .controls.Center {
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                -ms-grid-row-align: center;
+                align-items: center;
+            }
+
+            a.leftArrow,
+            a.rightArrow {
                 background-size: contain;
                 width: 25px;
-                height: 50px;
+                height: 100%;
                 text-indent: -9999px;
                 color: white;
                 display: inline-block;
                 background-image: url("img/leftArrow.svg");
                 background-repeat: no-repeat;
                 background-position: center center;
-                margin-bottom: 70px;
+                background-size: 25px;
+                margin-bottom: 0;
                 -webkit-flex: 1;
                 -ms-flex: 1;
                 flex: 1;
+                -ms-flex-item-align: center;
+                -webkit-align-self: center;
+                align-self: center;
             }
 
-            :host .event .controls a.leftArrow {
+            a.leftArrow:hover,
+            a.rightArrow:hover {}
+
+            a.leftArrow {
                 -webkit-order: 0;
                 -ms-flex-order: 0;
                 order: 0;
             }
 
-            :host .event .controls a.rightArrow {
+            a.rightArrow {
                 -webkit-transform: rotate(180deg);
                 -ms-transform: rotate(180deg);
                 transform: rotate(180deg);
@@ -79,7 +117,7 @@
                 order: 2;
             }
 
-            :host .event .controls .content {
+            .content {
                 -webkit-order: 1;
                 -ms-flex-order: 1;
                 order: 1;
@@ -89,24 +127,35 @@
                 flex: 7;
             }
 
-            :host .event .controls .content h2 {
-                font-size: 3em;
-                text-transform: uppercase;
-                line-height: 1.5;
-                white-space: normal;
+            .content.Left {
                 text-align: left;
-                margin: 0;
-                text-shadow: 0 0 10px rgba(0, 0, 0, .2);
             }
 
-            :host .event .controls .content h3 {
-                font-size: 2em;
+            .content.Center {
+                text-align: center;
+            }
+
+            .content.Right {
+                text-align: right;
+            }
+
+            h2 {
+                font-size: 4em;
+                text-transform: uppercase;
+                line-height: 1.2;
                 white-space: normal;
                 margin: 0;
-                text-shadow: 0 0 10px rgba(0, 0, 0, .2);
+                text-shadow: 0 0 10px rgba(0, 0, 0, .3);
             }
 
-            :host .event .controls .content a.learnMore {
+            h3 {
+                font-size: 2.5em;
+                white-space: normal;
+                margin: .25em auto;
+                text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+            }
+
+            a.learnMore {
                 background: #c30;
                 display: inline-block;
                 padding: 1em 2em;
@@ -116,21 +165,115 @@
                 margin: 1em auto;
             }
 
-            :host .event .controls .content a.learnMore:hover {
+            a.learnMore:hover {
                 background: #a52900;
+            }
+
+            a.learnMore.White {
+                background: white;
+                color: #333;
+            }
+
+            a.learnMore.White:hover {
+                background: #eee;
+            }
+
+            a.learnMore.Red {
+                background: #c30;
+                color: #fff;
+            }
+
+            a.learnMore.Red:hover {
+                background: #a52900;
+            }
+
+            a.learnMore.Navy {
+                background: #036;
+                color: #fff;
+            }
+
+            a.learnMore.Navy:hover {
+                background: #001933;
+            }
+
+            a.learnMore.Black {
+                background: #333;
+                color: #fff;
+            }
+
+            a.learnMore.Black:hover {
+                background: #fff;
+                color: #333;
+            }
+
+            @media screen and (min-width: 1680px) {
+                h2 {
+                    font-size: 4.5em;
+                }
+                h3 {
+                    font-size: 3em;
+                }
+            }
+
+            @media screen and (max-width: 991px) {
+                h2 {
+                    font-size: 3em;
+                }
+                h3 {
+                    font-size: 2em;
+                }
+            }
+
+            @media screen and (max-width: 768px) {
+                .event {
+                    min-height: 300px;
+                }
+                .controls {
+                    -webkit-align-items: center;
+                    -ms-flex-align: center;
+                    -ms-grid-row-align: center;
+                    align-items: center;
+                    padding-bottom: 0;
+                }
+                .content.Left,
+                .content.Right {
+                    text-align: center;
+                }
+                a.leftArrow,
+                a.rightArrow {
+                    margin-bottom: 0;
+                }
+                a.learnMore {
+                    margin: 0 auto;
+                }
+                h2 {
+                    font-size: 2em;
+                    margin: .5em 0;
+                }
+                h3 {
+                    font-size: 1.5em;
+                    line-height: 1.2;
+                    margin: .5em 0;
+                }
             }
         </style>
         <div id="container">
             <template is="dom-repeat" items="{{slides}}">
                 <div class="event" id="{{item.slug}}" style="background-image: url({{item.featuredImage}});">
-                    <div class="controls">
-                        <div class="content">
-                            <h2>{{item.name}}</h2>
-                            <h3>{{item.startAndEnd}}</h3>
-                            <a href="{{item.slug}}" class="learnMore">Learn More</a>
+                    <div class$="controls [[item.verticalAlignment]]">
+                        <div class$="content [[item.alignment]]">
+                            <template is="dom-if" if="[[!item.bodyOverride]]">
+                                <h2>{{item.heading}}</h2>
+                                <h3>{{item.subheading}}</h3>
+                                <a href="{{item.slug}}" class$="learnMore [[item.ctaColor]]">[[item.ctaText]]</a>
+                            </template>
+                            <template is="dom-if" if="[[item.bodyOverride]]">
+                                <marked-element class="bodyOverride" markdown="[[item.bodyOverride]]">
+                                </marked-element>
+                            </template>
                         </div>
-                        <a href="#" class="leftArrow">Left</a>
-                        <a href="#" class="rightArrow">Right</a>
+                        <a href="#" class="leftArrow" title="Previous Slide">Left</a>
+                        <a href="#" class="rightArrow" title="Next Slide">Right</a>
                     </div>
                 </div>
             </template>
@@ -138,30 +281,27 @@
     </template>
 
     <script>
+        /*
+                  A generic slider with alignment and button customization. Accepts a JSON array of 'slides'. Example use:
+
+                  <epic-slider slides="[{slide1}, {slide2}, {slide3}]" min-height="400px" slide-time="3000"></epic-slider>
+
+                  @hero img/hero.png
+                  @demo
+                */
         Polymer({
             /*
-              TODO: implement quadratic scrolling (currently linear)
-
               Notes
                 The auto-sliding interval checks that document.hasFocus() before sliding. This is to prevent the slides from stacking when on a different tab, then all happening at once when the user switches back to the host tab/window. This may have unintented consequences when used inside an iframe or when opening dev tools.
                 When mousing over this element, auto-sliding is disabled until a mouseleave event is detected.
-
-              Slides JSON should be in the following format:
-              [{
-                  "name":"",
-                  "teaser":"",
-                  "slug":"",
-                  "startAndEnd":"",
-                  "featuredImage":""
-               }. {
-                  ...
-               }]
             */
 
             is: 'epic-slider',
 
             properties: {
-                /** JSON array of data objects */
+                /**
+                  JSON array of data objects
+                */
                 slides: {
                     type: Array,
                     value: [],
@@ -171,33 +311,37 @@
                     type: String,
                     value: '400px'
                 },
-                /** Whether to automatically scroll between slides */
+                /**
+                  Whether to automatically scroll between slides
+                */
                 autoSlide: {
                     type: Boolean,
                     value: true
                 },
-                /** time in ms for slide to automatically change */
+                /**
+                  time in ms for slide to automatically change
+                */
                 slideTime: {
                     type: Number,
                     value: 3000
                 },
-                /** time in ms for slide transition */
+                /**
+                  time in ms for slide transition
+                */
                 slideTransitionTime: {
                     type: Number,
                     value: 400
                 },
-                /** sets the tick value in ms for slide transitions. Lower is smoother, higher is more performant */
+                /**
+                  Sets the tick value in ms for slide transitions. Lower is smoother, higher is more performant
+                */
                 transitionSmoothness: {
                     type: Number,
                     value: 10
-                },
-                slideInterval: {
-                    // global property for setInterval() to live in. See this.startInterval() and this.stopInterval()
                 }
             },
 
-            observers: [
-            ],
+            observers: [],
 
             listeners: {
                 /* stop auto-slide when mouse hovers over slider */
@@ -225,7 +369,7 @@
 
                 // Add event handler for window resize
                 window.addEventListener('resize', function() {
-                  this.debounce('resize', this.alignSelf, 100);
+                    this.debounce('resize', this.alignSelf, 100);
                 }.bind(this));
             },
 
@@ -310,7 +454,9 @@
               @param {num} Number of slide to transition to. Starts at 0
               @param {animate} Bool whether to animate the transition
             */
-            scrollToSlide: function(num, animate = true) {
+            scrollToSlide: function(num, animate) {
+                var animate = typeof animate !== 'undefined' ? animate : true;
+
                 var slideSize = Polymer.dom(this).node.getBoundingClientRect(),
                     slideWidth = slideSize.right - slideSize.left,
                     numOfSlides = this.numOfSlides() - 1;
@@ -323,10 +469,10 @@
                 }
 
                 /* scroll to position */
-                if(animate) {
+                if (animate) {
                     this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
                 } else {
-                  Polymer.dom(this).node.scrollLeft = num * slideWidth;
+                    Polymer.dom(this).node.scrollLeft = num * slideWidth;
                 }
             },
 
@@ -355,7 +501,7 @@
               Adds an additional slide to the component.
 
               @param {slideData} JSON object containing the following properties:
-                'name', 'teaser', 'slug', 'startAndEnd', 'image'
+                'name', 'teaser', 'ctaUrl', 'subheader', 'image', 'ctaText'
             */
             addSlide: function(slideData) {
                 this.push('slides', slideData);
