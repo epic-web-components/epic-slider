@@ -262,16 +262,16 @@
         </style>
         <div id="container">
             <template is="dom-repeat" items="{{slides}}">
-                <div class="event" id="{{item.slug}}" style="background-image: url({{item.featuredImage}});">
+                <div class="event" id="{{item.slug}}" style$="background-image: url({{item.featuredImage}});">
                     <div class$="controls [[item.verticalAlignment]]">
                         <div class$="content [[item.alignment]]">
                             <template is="dom-if" if="[[!item.bodyOverride]]">
                                 <h2>{{item.heading}}</h2>
                                 <h3>{{item.subheading}}</h3>
-                                <a href="{{item.slug}}" class$="learnMore [[item.ctaColor]]">[[item.ctaText]]</a>
+                                <a href$="{{item.slug}}" class$="learnMore [[item.ctaColor]]">[[item.ctaText]]</a>
                             </template>
                             <template is="dom-if" if="[[item.bodyOverride]]">
-                                <marked-element class="bodyOverride" markdown="[[item.bodyOverride]]">
+                                <marked-element class="bodyOverride" markdown$="[[item.bodyOverride]]">
                                 </marked-element>
                             </template>
                         </div>
