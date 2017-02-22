@@ -285,9 +285,24 @@
 
     <script>
         /*
-          A generic slider with alignment and button customization. Accepts a JSON array of 'slides'. Example use:
+          A generic slider with alignment and button customization.
+          Accepts a JSON array of 'slides'.
 
-          <epic-slider slides="[{slide1}, {slide2}, {slide3}]" min-height="400px" slide-time="3000"></epic-slider>
+          Example use:
+          <epic-slider
+            slides="[{slide1}, {slide2}, {slide3}]"
+            min-height="400px"
+            slide-time="3000">
+          </epic-slider>
+
+          A "slide" should have the following properties:
+            header: Text displayed as header on slide.
+            subheader: Text displayed as subheader on slide.
+            slug: Relative URL that the CTA button links to.
+            ctaText: Text within CTA button.
+            verticalAlignment: One of [Top, Center, Bottom]. Defaults to 'Center'.
+            featuredImage: URL of background image. Auto-cropped using "background-size: cover;".
+            alignment: One of [Left, Center, Right]. Defaults to 'Left'
 
           @hero img/hero.png
           @demo
