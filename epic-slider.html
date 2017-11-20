@@ -1,263 +1,264 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../marked-element/marked-element.html">
+<link rel="import" href="../polymer/lib/utils/debounce.html">
 
 <dom-module id="epic-slider">
     <template>
         <style>
             :host {
-                width: 100%;
-                margin: 0 auto;
-                overflow-x: hidden;
-                white-space: nowrap;
-                font-size: 0;
-                display: block;
-                font-family: "Interstate", helvetica, arial, sans-serif;
-                --min-height: 400px
+              width: 100%;
+              margin: 0 auto;
+              overflow-x: hidden;
+              white-space: nowrap;
+              font-size: 0;
+              display: block;
+              font-family: "Interstate", helvetica, arial, sans-serif;
+              --min-height: 400px
             }
 
             .event {
-                width: 100%;
-                display: inline-block;
-                position: relative;
-                font-size: 1rem;
-                background-color: black;
-                background-position: center center;
-                background-size: cover;
-                min-height: var(--min-height);
+              width: 100%;
+              display: inline-block;
+              position: relative;
+              font-size: 1rem;
+              background-color: black;
+              background-position: center center;
+              background-size: cover;
+              min-height: var(--min-height);
             }
 
             .controls {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 50%, transparent 100%);
-                height: 100%;
-                display: -webkit-flex;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-flex-flow: row nowrap;
-                -ms-flex-flow: row nowrap;
-                flex-flow: row nowrap;
-                -webkit-justify-content: space-between;
-                -ms-flex-pack: justify;
-                justify-content: space-between;
-                -webkit-align-items: flex-end;
-                -ms-flex-align: end;
-                align-items: flex-end;
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 50%, transparent 100%);
+              height: 100%;
+              display: -webkit-flex;
+              display: -ms-flexbox;
+              display: flex;
+              -webkit-flex-flow: row nowrap;
+              -ms-flex-flow: row nowrap;
+              flex-flow: row nowrap;
+              -webkit-justify-content: space-between;
+              -ms-flex-pack: justify;
+              justify-content: space-between;
+              -webkit-align-items: flex-end;
+              -ms-flex-align: end;
+              align-items: flex-end;
             }
 
             .controls.Bottom {
-                /* default */
-                -webkit-align-items: flex-end;
-                -ms-flex-align: end;
-                -ms-grid-row-align: flex-end;
-                align-items: flex-end;
+              /* default */
+              -webkit-align-items: flex-end;
+              -ms-flex-align: end;
+              -ms-grid-row-align: flex-end;
+              align-items: flex-end;
             }
 
             .controls:not(.Top):not(.Center) .content {
-                padding-bottom: 50px;
+              padding-bottom: 50px;
             }
 
             .controls.Top {
-                -webkit-align-items: flex-start;
-                -ms-flex-align: start;
-                -ms-grid-row-align: flex-start;
-                align-items: flex-start;
-                box-sizing: border-box;
+              -webkit-align-items: flex-start;
+              -ms-flex-align: start;
+              -ms-grid-row-align: flex-start;
+              align-items: flex-start;
+              box-sizing: border-box;
             }
 
             .controls.Top .content {
-                padding-top: 50px;
+              padding-top: 50px;
             }
 
             .controls.Center {
-                -webkit-align-items: center;
-                -ms-flex-align: center;
-                -ms-grid-row-align: center;
-                align-items: center;
+              -webkit-align-items: center;
+              -ms-flex-align: center;
+              -ms-grid-row-align: center;
+              align-items: center;
             }
 
             a.leftArrow,
             a.rightArrow {
-                background-size: contain;
-                width: 25px;
-                height: 100%;
-                text-indent: -9999px;
-                color: white;
-                display: inline-block;
-                background-image: url("img/leftArrow.svg");
-                background-repeat: no-repeat;
-                background-position: center center;
-                background-size: 25px;
-                margin-bottom: 0;
-                -webkit-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
-                -ms-flex-item-align: center;
-                -webkit-align-self: center;
-                align-self: center;
+              background-size: contain;
+              width: 25px;
+              height: 100%;
+              text-indent: -9999px;
+              color: white;
+              display: inline-block;
+              background-image: url("img/leftArrow.svg");
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 25px;
+              margin-bottom: 0;
+              -webkit-flex: 1;
+              -ms-flex: 1;
+              flex: 1;
+              -ms-flex-item-align: center;
+              -webkit-align-self: center;
+              align-self: center;
             }
 
             a.leftArrow:hover,
             a.rightArrow:hover {}
 
             a.leftArrow {
-                -webkit-order: 0;
-                -ms-flex-order: 0;
-                order: 0;
+              -webkit-order: 0;
+              -ms-flex-order: 0;
+              order: 0;
             }
 
             a.rightArrow {
-                -webkit-transform: rotate(180deg);
-                -ms-transform: rotate(180deg);
-                transform: rotate(180deg);
-                -webkit-order: 2;
-                -ms-flex-order: 2;
-                order: 2;
+              -webkit-transform: rotate(180deg);
+              -ms-transform: rotate(180deg);
+              transform: rotate(180deg);
+              -webkit-order: 2;
+              -ms-flex-order: 2;
+              order: 2;
             }
 
             .content {
-                -webkit-order: 1;
-                -ms-flex-order: 1;
-                order: 1;
-                color: white;
-                -webkit-flex: 7;
-                -ms-flex: 7;
-                flex: 7;
+              -webkit-order: 1;
+              -ms-flex-order: 1;
+              order: 1;
+              color: white;
+              -webkit-flex: 7;
+              -ms-flex: 7;
+              flex: 7;
             }
 
             .content.Left {
-                text-align: left;
+              text-align: left;
             }
 
             .content.Center {
-                text-align: center;
+              text-align: center;
             }
 
             .content.Right {
-                text-align: right;
+              text-align: right;
             }
 
             h2 {
-                font-size: 4em;
-                text-transform: uppercase;
-                line-height: 1.2;
-                white-space: normal;
-                margin: 0;
-                text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+              font-size: 4em;
+              text-transform: uppercase;
+              line-height: 1.2;
+              white-space: normal;
+              margin: 0;
+              text-shadow: 0 0 10px rgba(0, 0, 0, .3);
             }
 
             h3 {
-                font-size: 2.5em;
-                white-space: normal;
-                margin: .25em auto;
-                text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+              font-size: 2.5em;
+              white-space: normal;
+              margin: .25em auto;
+              text-shadow: 0 0 10px rgba(0, 0, 0, .3);
             }
 
             a.learnMore {
-                background: #c30;
-                display: inline-block;
-                padding: 1em 2em;
-                text-transform: uppercase;
-                color: white;
-                text-decoration: none;
-                margin: 1em auto;
+              background: #c30;
+              display: inline-block;
+              padding: 1em 2em;
+              text-transform: uppercase;
+              color: white;
+              text-decoration: none;
+              margin: 1em auto;
             }
 
             a.learnMore:hover {
-                background: #a52900;
+              background: #a52900;
             }
 
             a.learnMore.White {
-                background: white;
-                color: #333;
+              background: white;
+              color: #333;
             }
 
             a.learnMore.White:hover {
-                background: #eee;
+              background: #eee;
             }
 
             a.learnMore.Red {
-                background: #c30;
-                color: #fff;
+              background: #c30;
+              color: #fff;
             }
 
             a.learnMore.Red:hover {
-                background: #a52900;
+              background: #a52900;
             }
 
             a.learnMore.Navy {
-                background: #036;
-                color: #fff;
+              background: #036;
+              color: #fff;
             }
 
             a.learnMore.Navy:hover {
-                background: #001933;
+              background: #001933;
             }
 
             a.learnMore.Black {
-                background: #333;
-                color: #fff;
+              background: #333;
+              color: #fff;
             }
 
             a.learnMore.Black:hover {
-                background: #fff;
-                color: #333;
+              background: #fff;
+              color: #333;
             }
 
             @media screen and (min-width: 1680px) {
-                h2 {
-                    font-size: 4.5em;
-                }
-                h3 {
-                    font-size: 3em;
-                }
+              h2 {
+                font-size: 4.5em;
+              }
+              h3 {
+                font-size: 3em;
+              }
             }
 
             @media screen and (max-width: 991px) {
-                h2 {
-                    font-size: 3em;
-                }
-                h3 {
-                    font-size: 2em;
-                }
+              h2 {
+                font-size: 3em;
+              }
+              h3 {
+                font-size: 2em;
+              }
             }
 
             @media screen and (max-width: 768px) {
-                .event {
-                    min-height: 300px;
-                }
-                .controls {
-                    -webkit-align-items: center;
-                    -ms-flex-align: center;
-                    -ms-grid-row-align: center;
-                    align-items: center;
-                    padding-bottom: 0;
-                }
-                .content.Left,
-                .content.Right {
-                    text-align: center;
-                }
-                a.leftArrow,
-                a.rightArrow {
-                    margin-bottom: 0;
-                }
-                a.learnMore {
-                    margin: 0 auto;
-                }
-                h2 {
-                    font-size: 2em;
-                    margin: .5em 0;
-                }
-                h3 {
-                    font-size: 1.5em;
-                    line-height: 1.2;
-                    margin: .5em 0;
-                }
-                .controls:not(.Top):not(.Center) .content {
-                    padding-bottom: 0;
-                }
+              .event {
+                min-height: 300px;
+              }
+              .controls {
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                -ms-grid-row-align: center;
+                align-items: center;
+                padding-bottom: 0;
+              }
+              .content.Left,
+              .content.Right {
+                text-align: center;
+              }
+              a.leftArrow,
+              a.rightArrow {
+                margin-bottom: 0;
+              }
+              a.learnMore {
+                margin: 0 auto;
+              }
+              h2 {
+                font-size: 2em;
+                margin: .5em 0;
+              }
+              h3 {
+                font-size: 1.5em;
+                line-height: 1.2;
+                margin: .5em 0;
+              }
+              .controls:not(.Top):not(.Center) .content {
+                padding-bottom: 0;
+              }
             }
         </style>
         <div id="container">
@@ -284,247 +285,228 @@
     </template>
 
     <script>
+      /*
+        A generic slider with alignment and button customization.
+        Accepts a JSON array of 'slides'.
+
+        Example use:
+        <epic-slider
+          slides="[{slide1}, {slide2}, {slide3}]"
+          min-height="400px"
+          slide-time="3000">
+        </epic-slider>
+
+        A "slide" should have the following properties:
+          header: Text displayed as header on slide.
+          subheader: Text displayed as subheader on slide.
+          slug: Relative URL that the CTA button links to.
+          ctaText: Text within CTA button.
+          verticalAlignment: One of [Top, Center, Bottom]. Defaults to 'Center'.
+          featuredImage: URL of background image. Auto-cropped using "background-size: cover;".
+          alignment: One of [Left, Center, Right]. Defaults to 'Left'
+
+        @hero img/hero.png
+        @demo
+      */
+      class EpicSlider extends Polymer.Element {
+        static get is() { return 'epic-slider' }
+
+        static get properties() {
+          return {
+              /**
+                JSON array of data objects
+              */
+              slides: {
+                  type: Array,
+                  value: [],
+                  notify: true
+              },
+              minHeight: {
+                  type: String,
+                  value: '400px'
+              },
+              /**
+                Whether to automatically scroll between slides
+              */
+              autoSlide: {
+                  type: Boolean,
+                  value: true
+              },
+              /**
+                time in ms for slide to automatically change
+              */
+              slideTime: {
+                  type: Number,
+                  value: 3000
+              },
+              /**
+                time in ms for slide transition
+              */
+              slideTransitionTime: {
+                  type: Number,
+                  value: 400
+              },
+              /**
+                Sets the tick value in ms for slide transitions. Lower is smoother, higher is more performant
+              */
+              transitionSmoothness: {
+                  type: Number,
+                  value: 10
+              }
+          }
+        }
+
+        ready() {
+          super.ready();
+
+          this.addEventListener('mouseenter', this.stopInterval);
+          this.addEventListener('mouseleave', this.startInterval);
+
+          // attach click observers whenever new slides are added
+          this._observer = new Polymer.FlattenedNodesObserver(this.shadowRoot.querySelector('#container'), (() => this.assignArrowClickBinding() ).bind(this));
+
+          // start auto-slide
+          if (this.autoSlide) {
+            this.startInterval();
+          }
+
+          this.assignArrowClickBinding();
+
+          // Add event handler for window resize
+          window.addEventListener('resize', function() {
+            this._debouncer = Polymer.Debouncer.debounce(this._debouncer, Polymer.Async.timeOut.after(100), this.alignSelf.bind(this));
+          }.bind(this));
+        }
+
         /*
-          A generic slider with alignment and button customization.
-          Accepts a JSON array of 'slides'.
-
-          Example use:
-          <epic-slider
-            slides="[{slide1}, {slide2}, {slide3}]"
-            min-height="400px"
-            slide-time="3000">
-          </epic-slider>
-
-          A "slide" should have the following properties:
-            header: Text displayed as header on slide.
-            subheader: Text displayed as subheader on slide.
-            slug: Relative URL that the CTA button links to.
-            ctaText: Text within CTA button.
-            verticalAlignment: One of [Top, Center, Bottom]. Defaults to 'Center'.
-            featuredImage: URL of background image. Auto-cropped using "background-size: cover;".
-            alignment: One of [Left, Center, Right]. Defaults to 'Left'
-
-          @hero img/hero.png
-          @demo
+          Make sure we don't get caught halfway through a slide on window.resize
         */
-        Polymer({
-            /*
-              Notes
-                The auto-sliding interval checks that document.hasFocus() before sliding. This is to prevent the slides from stacking when on a different tab, then all happening at once when the user switches back to the host tab/window. This may have unintented consequences when used inside an iframe or when opening dev tools.
+        alignSelf() {
+          var currentSlide = this.currentSlide();
+          this.scrollToSlide(currentSlide, false);
+        }
 
-                When mousing over this element, auto-sliding is disabled until a mouseleave event is detected.
-            */
+        /*
+          Assigns navigation binding to right and left arrows
+        */
+        assignArrowClickBinding() {
+            var rightArrows = this.shadowRoot.querySelectorAll('a.rightArrow'),
+                leftArrows = this.shadowRoot.querySelectorAll('a.leftArrow'),
+                me = this;
 
-            is: 'epic-slider',
+            // assumes there are an equal number of right and left arrows
+            for (let i = 0; i < leftArrows.length; i += 1) {
+              leftArrows[i].addEventListener('click', ((e) => {
+                e.preventDefault();
+                var index = this.currentSlide();
+                me.scrollToSlide(index - 1);
+              }).bind(this));
 
-            properties: {
-                /**
-                  JSON array of data objects
-                */
-                slides: {
-                    type: Array,
-                    value: [],
-                    notify: true
-                },
-                minHeight: {
-                    type: String,
-                    value: '400px'
-                },
-                /**
-                  Whether to automatically scroll between slides
-                */
-                autoSlide: {
-                    type: Boolean,
-                    value: true
-                },
-                /**
-                  time in ms for slide to automatically change
-                */
-                slideTime: {
-                    type: Number,
-                    value: 3000
-                },
-                /**
-                  time in ms for slide transition
-                */
-                slideTransitionTime: {
-                    type: Number,
-                    value: 400
-                },
-                /**
-                  Sets the tick value in ms for slide transitions. Lower is smoother, higher is more performant
-                */
-                transitionSmoothness: {
-                    type: Number,
-                    value: 10
-                }
-            },
-
-            observers: [],
-
-            listeners: {
-                /* stop auto-slide when mouse hovers over slider */
-                'mouseenter': 'stopInterval',
-                'mouseleave': 'startInterval'
-            },
-
-            ready: function() {
-                // initialize custom height
-                this.customStyle['--min-height'] = this.minHeight;
-
-                // attach click observers whenever new slides are added
-                this._observer = Polymer.dom(this.$.container).observeNodes((function() {
-                    this.assignArrowClickBinding();
-                }).bind(this));
-            },
-
-            attached: function() {
-                // start auto-slide
-                if (this.autoSlide) {
-                    this.startInterval()
-                }
-
-                this.assignArrowClickBinding();
-
-                // Add event handler for window resize
-                window.addEventListener('resize', function() {
-                    this.debounce('resize', this.alignSelf, 100);
-                }.bind(this));
-            },
-
-            detached: function() {
-                this.stopInterval();
-            },
-
-            /*
-              Make sure we don't get caught halfway through a slide on window.resize
-            */
-            alignSelf: function() {
-                var currentSlide = this.currentSlide();
-                this.scrollToSlide(currentSlide, false);
-            },
-
-            /*
-              Assigns navigation binding to right and left arrows
-            */
-            assignArrowClickBinding: function() {
-                var rightArrows = Polymer.dom(this.root).querySelectorAll('a.rightArrow'),
-                    leftArrows = Polymer.dom(this.root).querySelectorAll('a.leftArrow'),
-                    me = this;
-
-                /*
-                    Assumes there are an equal number of right and left arrows
-                */
-                for (i = 0; i < leftArrows.length; i += 1) {
-                    leftArrows[i].addEventListener('click', (function(e) {
-                        e.preventDefault();
-                        var index = this.currentSlide();
-                        me.scrollToSlide(index - 1);
-                    }).bind(this));
-
-                    rightArrows[i].addEventListener('click', (function(e) {
-                        e.preventDefault();
-                        var index = this.currentSlide();
-                        me.scrollToSlide(index + 1);
-                    }).bind(this));
-                }
-            },
-
-            /*
-              Starts auto-slide interval
-            */
-            startInterval: function() {
-                this.slideInterval = setInterval(function() {
-                    var currentSlide = this.currentSlide();
-                    if (document.hasFocus()) {
-                        this.scrollToSlide(currentSlide + 1);
-                    }
-                }.bind(this), this.slideTime);
-            },
-
-            /*
-              Stops auto-slide
-            */
-            stopInterval: function() {
-                clearInterval(this.slideInterval);
-            },
-
-            /*
-              Gets current slide number (0 is first slide)
-            */
-            currentSlide: function() {
-                var scrollLeft = Polymer.dom(this).node.scrollLeft,
-                    slideWidth = Polymer.dom(this).node.offsetWidth,
-                    slideNum = Math.round(scrollLeft / slideWidth);
-
-                return slideNum;
-            },
-
-            /*
-              Returns the number of slides in the component
-            */
-            numOfSlides: function() {
-                return Polymer.dom(this.root).querySelectorAll('div.event').length;
-            },
-
-            /*
-              Scrolls to a specific slide number
-
-              @param {num} Number of slide to transition to. Starts at 0
-              @param {animate} Bool whether to animate the transition
-            */
-            scrollToSlide: function(num, animate) {
-                var animate = typeof animate !== 'undefined' ? animate : true;
-
-                var slideSize = Polymer.dom(this).node.getBoundingClientRect(),
-                    slideWidth = slideSize.right - slideSize.left,
-                    numOfSlides = this.numOfSlides() - 1;
-
-                /* edge cases */
-                if (num < 0) {
-                    num = numOfSlides;
-                } else if (num > numOfSlides) {
-                    num = 0;
-                }
-
-                /* scroll to position */
-                if (animate) {
-                    this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
-                } else {
-                    Polymer.dom(this).node.scrollLeft = num * slideWidth;
-                }
-            },
-
-            /*
-              Recursive scrolling animation (to left)
-
-              @param {element} Element to scroll
-              @param {to} Pixel value to scroll to
-              @param {duration} Time (in ms) for animation to take
-             */
-            scrollToLeft: function(element, to, duration) {
-                if (duration <= 0) return;
-
-                var tick = this.transitionSmoothness,
-                    difference = to - element.scrollLeft,
-                    perTick = difference / duration * tick;
-
-                setTimeout(function() {
-                    element.scrollLeft = Math.floor(element.scrollLeft + perTick);
-                    if (element.scrollLeft == to) return;
-                    this.scrollToLeft(element, to, duration - tick);
-                }.bind(this), tick);
-            },
-
-            /*
-              Adds an additional slide to the component.
-
-              @param {slideData} JSON object containing the following properties:
-                'name', 'teaser', 'ctaUrl', 'subheader', 'image', 'ctaText'
-            */
-            addSlide: function(slideData) {
-              this.push('slides', slideData);
+              rightArrows[i].addEventListener('click', ((e) => {
+                e.preventDefault();
+                var index = this.currentSlide();
+                me.scrollToSlide(index + 1);
+              }).bind(this));
             }
-        });
+        }
+
+        /*
+          Starts auto-slide interval
+        */
+        startInterval() {
+          this.slideInterval = setInterval(function() {
+            var currentSlide = this.currentSlide();
+            if (document.hasFocus()) {
+              this.scrollToSlide(currentSlide + 1);
+            }
+          }.bind(this), this.slideTime);
+        }
+
+        /*
+          Stops auto-slide
+        */
+        stopInterval() {
+          clearInterval(this.slideInterval);
+        }
+
+        /*
+          Gets current slide number (0 is first slide)
+        */
+        currentSlide() {
+          var scrollLeft = Polymer.dom(this).node.scrollLeft,
+              slideWidth = Polymer.dom(this).node.offsetWidth,
+              slideNum = Math.round(scrollLeft / slideWidth);
+
+          return slideNum;
+        }
+
+        /*
+          Returns the number of slides in the component
+        */
+        numOfSlides() {
+          return this.shadowRoot.querySelectorAll('div.event').length;
+        }
+
+        /*
+          Scrolls to a specific slide number
+
+          @param {num} Number of slide to transition to. Starts at 0
+          @param {animate} Bool whether to animate the transition
+        */
+        scrollToSlide(num, animate) {
+          var animate = typeof animate !== 'undefined' ? animate : true;
+
+          var slideSize = Polymer.dom(this).node.getBoundingClientRect(),
+              slideWidth = slideSize.right - slideSize.left,
+              numOfSlides = this.numOfSlides() - 1;
+
+          /* edge cases */
+          if (num < 0) {
+              num = numOfSlides;
+          } else if (num > numOfSlides) {
+              num = 0;
+          }
+
+          /* scroll to position */
+          if (animate) {
+              this.scrollToLeft(Polymer.dom(this).node, num * slideWidth, this.slideTransitionTime);
+          } else {
+              Polymer.dom(this).node.scrollLeft = num * slideWidth;
+          }
+        }
+
+        /*
+          Recursive scrolling animation (to left)
+
+          @param {element} Element to scroll
+          @param {to} Pixel value to scroll to
+          @param {duration} Time (in ms) for animation to take
+         */
+        scrollToLeft(element, to, duration) {
+            if (duration <= 0) return;
+
+            var tick = this.transitionSmoothness,
+                difference = to - element.scrollLeft,
+                perTick = difference / duration * tick;
+
+            setTimeout(function() {
+                element.scrollLeft = Math.floor(element.scrollLeft + perTick);
+                if (element.scrollLeft == to) return;
+                this.scrollToLeft(element, to, duration - tick);
+            }.bind(this), tick);
+        }
+
+        /*
+          Adds an additional slide to the component.
+
+          @param {slideData} JSON object containing the following properties:
+            'name', 'teaser', 'ctaUrl', 'subheader', 'image', 'ctaText'
+        */
+        addSlide(slideData) {
+          this.push('slides', slideData);
+        }
+      }
+
+      window.customElements.define(EpicSlider.is, EpicSlider);
     </script>
 </dom-module>

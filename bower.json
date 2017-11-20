@@ -3,13 +3,18 @@
   "description": "a basic responsive banner/slider polymer element",
   "main": "epic-slider.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.22"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    "web-component-tester": "^6.0.0"
+  },
+  "resolutions": {
+    "mocha": "^3.1.2",
+    "test-fixture": "^3.0.0",
+    "webcomponentsjs": "^v1.0.2",
+    "polymer": "^2.0.0"
   }
 }
